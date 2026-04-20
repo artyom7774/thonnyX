@@ -47,6 +47,7 @@ Libraries, resources and tools
 Source contributors, sponsors, advisors, translators and frequent bug-reporters
 -------------------------------------------------------------------------------
 * adzierzanowski
+* @AgrimGupta04
 * Aivar Annamaa
 * Albin
 * Alar Leemet
