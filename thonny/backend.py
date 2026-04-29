@@ -630,7 +630,7 @@ class SshMixin(UploadDownloadMixin):
         try:
             import paramiko.client
 
-            logger.debug("Could import %", paramiko.client)
+            logger.debug("Could import %s", paramiko.client)
         except ImportError:
             logger.info("Could not import paramiko")
             print(
