@@ -161,6 +161,7 @@ Source contributors, sponsors, advisors, translators and frequent bug-reporters
 * phr0gger
 * @plexus
 * Pop Vasile Alexandru
+* @Pran-jal25
 * @r0zh
 * Radim
 * Ralf Michael Metzing
