@@ -8,15 +8,20 @@ thonny_container = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirna
 if thonny_container not in sys.path:
     sys.path.insert(0, thonny_container)
 
-from thonny.plugins.micropython.bare_metal_backend import launch_bare_metal_backend
-from thonny.plugins.simplified_micropython.simplified_mp_back import SimplifiedMicroPythonBackend
+from thonny.plugins.micropython.bare_metal_backend import (
+    BareMetalMicroPythonBackend,
+    launch_bare_metal_backend,
+)
 
 # Can't use __name__, because it will be "__main__"
-logger = getLogger("thonny.plugins.microbit.microbit_back")
+logger = getLogger("thonny.plugins.micropython.microbit_backend")
 
 
-class MicrobitMicroPythonBackend(SimplifiedMicroPythonBackend):
-    pass
+class MicrobitMicroPythonBackend(BareMetalMicroPythonBackend):
+    def _get_sys_path_for_analysis(self) -> Optional[List[str]]:
+        return [
+            os.path.join(os.path.dirname(__file__), "api_stubs"),
+        ]
 
 
 if __name__ == "__main__":

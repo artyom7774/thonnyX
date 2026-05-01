@@ -24,16 +24,28 @@ class AboutDialog(CommonDialogEx):
         self.title(tr("About Thonny"))
         self.resizable(height=tk.FALSE, width=tk.FALSE)
 
+        # TODO ge
+
+        from variables import TITLE, VERSION
+
         default_heading_font = tkinter.font.nametofont("TkHeadingFont")
         heading_font = default_heading_font.copy()
         heading_font.configure(size=int(default_heading_font["size"] * 1.7), weight="bold")
         heading_label = ttk.Label(
-            self.main_frame, text="Thonny " + thonny.get_version(), font=heading_font
+            self.main_frame, text=f"{TITLE} {VERSION}", font=heading_font
         )
         heading_label.grid(pady=(self.get_large_padding(), self.get_small_padding()))
 
+        heading_font_two = default_heading_font.copy()
+        heading_font_two.configure(size=int(default_heading_font["size"] * 1.4))
+
+        forked_label = ttk.Label(
+            self.main_frame, text="Forked on Thonny " + thonny.get_version(), font=heading_font_two
+        )
+        forked_label.grid()
+
         url_label = create_url_label(self.main_frame, "https://thonny.org", justify=tk.CENTER)
-        url_label.grid()
+        # url_label.grid()
 
         if sys.platform == "linux":
             try:
@@ -88,7 +100,8 @@ class AboutDialog(CommonDialogEx):
             ),
             justify=tk.CENTER,
         )
-        credits_label.grid()
+
+        # credits_label.grid()
 
         default_font = tkinter.font.nametofont("TkDefaultFont")
         license_font = default_font.copy()

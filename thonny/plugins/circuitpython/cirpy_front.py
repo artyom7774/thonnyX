@@ -1,10 +1,10 @@
-import os.path
+import sys
 from logging import getLogger
-from typing import List, Optional
+from typing import List
 
 from thonny import ui_utils
 from thonny.languages import tr
-from thonny.plugins.micropython.daplink_flasher import DaplinkFlashingDialog
+from thonny.plugins.microbit import MicrobitFlashingDialog
 from thonny.plugins.micropython.esptool_dialog import try_launch_esptool_dialog
 from thonny.plugins.micropython.mp_front import (
     BareMetalMicroPythonConfigPage,
@@ -60,10 +60,6 @@ class CircuitPythonProxy(BareMetalMicroPythonProxy):
         }
 
     @classmethod
-    def get_pypi_common_tokens(cls) -> List[str]:
-        return ["circuitpython", "adafruit"]
-
-    @classmethod
     def get_vids_pids_to_avoid(self):
         return VIDS_PIDS_TO_AVOID
 
@@ -90,11 +86,11 @@ class CircuitPythonProxy(BareMetalMicroPythonProxy):
         if (p.vid, p.pid) in get_uart_adapter_vids_pids():
             return True
 
-        return "CircuitPython CDC " in (p.interface or "")
-
-    @classmethod
-    def get_vendored_user_stubs_ids(cls) -> List[str]:
-        return ["circuitpython-typeshed"]
+        if "adafruit_board_toolkit" in sys.modules or sys.platform == "linux":
+            # can trust p.interface value
+            return "CircuitPython CDC " in (p.interface or "")
+        else:
+            return super()._is_potential_port(p)
 
 
 class CircuitPythonConfigPage(BareMetalMicroPythonConfigPage):
@@ -104,15 +100,14 @@ class CircuitPythonConfigPage(BareMetalMicroPythonConfigPage):
     def get_flashing_dialog_kinds(self) -> List[str]:
         return ["UF2", "esptool", "BBC micro:bit"]
 
-    def _open_flashing_dialog(self, kind: str) -> Optional[str]:
+    def _open_flashing_dialog(self, kind: str) -> None:
         if kind == "UF2":
-            return show_uf2_installer(self, firmware_name="CircuitPython")
+            show_uf2_installer(self, firmware_name="CircuitPython")
         elif kind == "esptool":
-            return try_launch_esptool_dialog(self.winfo_toplevel(), "CircuitPython")
+            try_launch_esptool_dialog(self.winfo_toplevel(), "CircuitPython")
         elif kind == "BBC micro:bit":
-            dlg = DaplinkFlashingDialog(self, "CircuitPython")
+            dlg = MicrobitFlashingDialog(self, "CircuitPython")
             ui_utils.show_dialog(dlg)
-            return None
 
-    def get_firmware_name(self) -> str:
-        return "MicroPython"
+    def _get_flasher_link_title(self) -> str:
+        return tr("Install or update %s") % "CircuitPython"

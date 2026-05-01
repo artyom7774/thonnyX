@@ -1,3 +1,4 @@
 #!/bin/bash
 
-cp -r ../pyserial/serial thonny/vendored_libs
+cp ../pipkin/pipkin/*.py thonny/vendored_libs/pipkin
+#pip install filelock -t thonny\vendored_libs

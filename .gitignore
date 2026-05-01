@@ -19,7 +19,7 @@
 .mypy_cache
 .DS_Store
 __pycache__
-packaging/**/dist
+dist
 venv
 venv*
 packaging/linux/build
@@ -58,7 +58,3 @@ thonny.egg-info
 temp_build_dir
 thonnyapp/thonnyapp.egg-info
 thonnycontrib
-node
-node.exe
-.python-version
-/dist/

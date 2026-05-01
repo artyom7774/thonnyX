@@ -4,10 +4,12 @@ import ast
 import configparser
 import datetime
 import os.path
+import sys
 import tkinter as tk
 from configparser import ConfigParser
 from logging import exception, getLogger
-from typing import Any, Dict
+
+from thonny import THONNY_USER_DIR
 
 logger = getLogger(__name__)
 
@@ -38,7 +40,7 @@ class ConfigurationManager:
         self._filename = filename
         self._defaults = {}
         self._defaults_overrides_str = {}
-        self._variables: Dict[str, tk.Variable] = {}
+        self._variables = {}  # Tk variables
 
         if os.path.exists(self._filename):
             with open(self._filename, "r", encoding="UTF-8") as fp:
@@ -138,16 +140,13 @@ class ConfigurationManager:
             elif isinstance(value, str):
                 var = tk.StringVar(value=value)
             elif isinstance(value, float):
-                var = tk.DoubleVar(value=value)
+                var = tk.StringVar(value=value)
             else:
                 raise KeyError(
                     "Can't create Tk Variable for " + name + ". Type is " + str(type(value))
                 )
             self._variables[name] = var
             return var
-
-    def get_snapshot(self) -> Dict[str, Any]:
-        return {name: self.get_option(name) for name in self._defaults}
 
     def save(self):
         # save all tk variables

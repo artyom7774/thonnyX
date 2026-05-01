@@ -1,9 +1,8 @@
 from logging import getLogger
-
-from minny.target import RAW_PASTE_SUBMIT_MODE
-from typing import List, Optional
+from typing import List
 
 from thonny.plugins.micropython import add_micropython_backend
+from thonny.plugins.micropython.mp_common import RAW_PASTE_SUBMIT_MODE
 from thonny.plugins.micropython.mp_front import (
     BareMetalMicroPythonConfigPage,
     BareMetalMicroPythonProxy,
@@ -43,9 +42,9 @@ class RP2040BackendConfigPage(BareMetalMicroPythonConfigPage):
     def get_flashing_dialog_kinds(self) -> List[str]:
         return [""]
 
-    def _open_flashing_dialog(self, kind: str) -> Optional[str]:
+    def _open_flashing_dialog(self, kind: str) -> None:
         assert kind == ""
-        return show_uf2_installer(self, firmware_name="MicroPython")
+        show_uf2_installer(self, firmware_name="MicroPython")
 
     @property
     def allow_webrepl(self):

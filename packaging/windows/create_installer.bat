@@ -6,9 +6,9 @@ rmdir %BUILDDIR% /S /Q
 mkdir %BUILDDIR%
 
 @echo ............... COPYING PYTHON ...................................
-xcopy "C:\Program Files\Python314\*" %BUILDDIR% /S /E /K>NUL
+xcopy C:\Python310-64\* %BUILDDIR% /S /E /K>NUL
 @echo ............... COPYING OTHER STUFF ...................................
-copy ThonnyRunner314\x64\Release\thonny.exe %BUILDDIR% /Y
+copy ThonnyRunner310\x64\Release\thonny.exe %BUILDDIR% /Y
 copy thonny_python.ini %BUILDDIR%
 
 @echo ............... INSTALLING DEPS ...................................
@@ -19,7 +19,7 @@ copy thonny_python.ini %BUILDDIR%
 
 @echo ............... INSTALLING THONNY ...................................
 %BUILDDIR%\python -s -m pip install --no-warn-script-location --pre --no-cache-dir thonny
-@rem %BUILDDIR%\python -s -m pip install --no-warn-script-location ..\..\dist\thonny-4.2.0.dev1-py3-none-any.whl
+@rem %BUILDDIR%\python -s -m pip install --no-warn-script-location ..\setuptools\thonny-4.0.0b4.dev1-py3-none-any.whl
 
 @echo ............... CLEANING PYTHON ............................
 @rem move following 3 files to avoid confusion (user may think they're Thonny license etc.)
@@ -41,7 +41,7 @@ del "%BUILDDIR%\Scripts\*" /Q>NUL
 
 copy .\pip.bat "%BUILDDIR%\Scripts\pip.bat"
 copy .\pip.bat "%BUILDDIR%\Scripts\pip3.bat"
-copy .\pip.bat "%BUILDDIR%\Scripts\pip3.14.bat"
+copy .\pip.bat "%BUILDDIR%\Scripts\pip3.10.bat"
 
 rmdir %BUILDDIR%\lib\test /S /Q>NUL
 
@@ -74,13 +74,27 @@ copy ..\..\README.rst %BUILDDIR% /Y>NUL
 
 @echo ............... CREATING INSTALLER ..........................
 set /p VERSION=<%BUILDDIR%\Lib\site-packages\thonny\VERSION
-"C:\Program Files (x86)\Inno Setup 6\iscc" /dInstallerPrefix=thonny /dAppVer=%VERSION% /dArch=x64 /dSupportedArchitectures="x64compatible arm64" /dSourceFolder=build inno_setup.iss > installer_building.log
+"C:\Program Files (x86)\Inno Setup 6\iscc" /dInstallerPrefix=thonny /dAppVer=%VERSION% /dSourceFolder=build inno_setup.iss > installer_building.log
 
 @echo ............... CREATING ZIP ..........................
 SET PATH=%PATH%;C:\Program Files\7-Zip
 copy ..\portable_thonny.ini %BUILDDIR%
 cd %BUILDDIR%
-7z a -tzip ..\dist\thonny-%VERSION%-windows-portable-x64.zip *
+7z a -tzip ..\dist\thonny-%VERSION%-windows-portable.zip *
 del portable_thonny.ini
 cd ..
 
+@echo ............... XXL ..........................
+%BUILDDIR%\python -s -m pip install --no-cache-dir -r ..\requirements-xxl-bundle.txt
+
+del /S "%BUILDDIR%\*.pyc">NUL
+
+@rem no point in keeping exe-s in Scripts, as they contain absolute path to the interpreter
+del "%BUILDDIR%\Scripts\*.exe" /Q>NUL
+del "%BUILDDIR%\Scripts\*.manifest" /Q>NUL
+
+
+"C:\Program Files (x86)\Inno Setup 6\iscc" /dInstallerPrefix=thonny-xxl /dAppVer=%VERSION% /dSourceFolder=build inno_setup.iss > xxl_installer_building.log
+
+rmdir %BUILDDIR% /S /Q
+pause

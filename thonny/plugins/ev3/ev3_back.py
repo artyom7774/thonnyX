@@ -16,12 +16,15 @@ logger = getLogger("thonny.plugins.ev3.ev3_back")
 
 
 class EV3MicroPythonBackend(SshUnixMicroPythonBackend):
-    pass
+    def _get_sys_path_for_analysis(self) -> Optional[List[str]]:
+        return [
+            os.path.join(os.path.dirname(__file__), "api_stubs"),
+        ] + super()._get_sys_path_for_analysis()
 
 
 if __name__ == "__main__":
+    THONNY_USER_DIR = os.environ["THONNY_USER_DIR"]
     thonny.configure_backend_logging()
-    print(PROCESS_ACK)
 
     import ast
 

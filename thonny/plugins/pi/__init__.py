@@ -18,7 +18,6 @@ def pix():
     MAIN_BACKGROUND = "#ededed"
     detail_bg = "#d0d0d0"
     detail_bg2 = "#cfcdc8"
-    border = "#9d9a92"
     res_dir = os.path.join(os.path.dirname(__file__), "res")
     scrollbar_button_settings = {}
     for direction, element_name in [
@@ -93,7 +92,7 @@ def pix():
             },
             "map": {"background": [], "darkcolor": [], "lightcolor": []},
         },
-        # Padding allows tweaking thumb width
+        # Padding allows twaking thumb width
         "Vertical.TScrollbar": {
             "layout": [
                 (
@@ -184,22 +183,6 @@ def pix():
         },
         "Tip.TLabel": {"configure": {"background": detail_bg2, "foreground": "black"}},
         "Tip.TFrame": {"configure": {"background": detail_bg2}},
-        "CustomToolbutton": {
-            "configure": {"background": MAIN_BACKGROUND, "activebackground": detail_bg}
-        },
-        "CustomNotebook": {
-            "configure": {
-                "bordercolor": border,
-            }
-        },
-        "CustomNotebook.Tab": {
-            "configure": {
-                "background": detail_bg,
-                "activebackground": MAIN_BACKGROUND,
-                "hoverbackground": MAIN_BACKGROUND,
-                "indicatorbackground": MAIN_BACKGROUND,
-            }
-        },
         "OPTIONS": {"configure": {"icons_in_menus": False, "shortcuts_in_tooltips": False}},
     }
 
@@ -286,31 +269,49 @@ def update_fonts():
 
 def load_plugin():
     # set custom images
-    images = {
-        "run-current-script": "media-playback-start.png",
-        "stop": "process-stop.png",
-        "new-file": "document-new.png",
-        "open-file": "document-open.png",
-        "save-file": "document-save.png",
-        "debug-current-script": "debug-run.png",
-        "step-over": "debug-step-over.png",
-        "step-into": "debug-step-into.png",
-        "step-out": "debug-step-out.png",
-        "run-to-cursor": "debug-run-cursor.png",
-        "tab-close": "window-close.png",
-        "tab-close-active": "window-close-act.png",
-        "resume": "resume.png",
-        "zoom": "zoom.png",
-        "quit": "quit.png",
-        "Ukraine": "Ukraine.png",
-    }
+    if get_workbench().get_ui_mode() == "simple" and get_workbench().winfo_screenwidth() >= 1280:
+        images = {
+            "run-current-script": "media-playback-start48.png",
+            "stop": "process-stop48.png",
+            "new-file": "document-new48.png",
+            "open-file": "document-open48.png",
+            "save-file": "document-save48.png",
+            "debug-current-script": "debug-run48.png",
+            "step-over": "debug-step-over48.png",
+            "step-into": "debug-step-into48.png",
+            "step-out": "debug-step-out48.png",
+            "run-to-cursor": "debug-run-cursor48.png",
+            "tab-close": "window-close.png",
+            "tab-close-active": "window-close-act.png",
+            "resume": "resume48.png",
+            "zoom": "zoom48.png",
+            "quit": "quit48.png",
+            "Ukraine": "Ukraine48.png",
+        }
+    else:
+        images = {
+            "run-current-script": "media-playback-start.png",
+            "stop": "process-stop.png",
+            "new-file": "document-new.png",
+            "open-file": "document-open.png",
+            "save-file": "document-save.png",
+            "debug-current-script": "debug-run.png",
+            "step-over": "debug-step-over.png",
+            "step-into": "debug-step-into.png",
+            "step-out": "debug-step-out.png",
+            "run-to-cursor": "debug-run-cursor.png",
+            "tab-close": "window-close.png",
+            "tab-close-active": "window-close-act.png",
+            "resume": "resume.png",
+            "zoom": "zoom.png",
+            "quit": "quit.png",
+            "Ukraine": "Ukraine.png",
+        }
 
     res_dir = os.path.join(os.path.dirname(__file__), "res")
     theme_image_map = {}
     for image in images:
         theme_image_map[image] = os.path.join(res_dir, images[image])
 
-    get_workbench().add_ui_theme("Raspberry Pi", "Enhanced Clam", pix, images=theme_image_map)
-    get_workbench().add_ui_theme(
-        "Raspberry Pi Dark", "Clean Dark", pix_dark, images=theme_image_map
-    )
+    get_workbench().add_ui_theme("Raspberry Pi", "Enhanced Clam", pix, theme_image_map)
+    get_workbench().add_ui_theme("Raspberry Pi Dark", "Clean Dark", pix_dark, theme_image_map)

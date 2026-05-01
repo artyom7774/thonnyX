@@ -1,12 +1,10 @@
-﻿#define AppUserModelID "Thonny.Thonny"
-#define ThonnyPyProgID "Thonny.py"
-; Give AppVer and SourceFolder from command line, eg:
+﻿; Give AppVer and SourceFolder from command line, eg:
 ; "C:\Program Files (x86)\Inno Setup 5\iscc" /dAppVer=1.13 /dSourceFolder=build inno_setup.iss 
 ;#define AppVer "9.9.9"
 ;#define InstallerPrefix "thonny"
-;#define SourceFolder "C:\Users\Aivar Annamaa\python_stuff\thonny\packaging\windows\build"
-;#define SupportedArchitectures "x64"
-;#define Arch "x64"
+;#define SourceFolder "C:\workspaces\python_stuff\thonny\packaging\windows\dummy"
+#define AppUserModelID "Thonny.Thonny"
+#define ThonnyPyProgID "Thonny.py"
 
 
 [Setup]
@@ -24,11 +22,7 @@ AppUpdatesURL=https://thonny.org
 ; Actual privileges depend on how user started the installer
 PrivilegesRequired=lowest
 PrivilegesRequiredOverridesAllowed=commandline dialog
-
-; Compatibility
-MinVersion=10.0
-ArchitecturesAllowed={#SupportedArchitectures}
-ArchitecturesInstallIn64BitMode={#SupportedArchitectures}
+MinVersion=6.0
 
 ; Will show important info on welcome page
 DisableWelcomePage=no
@@ -49,13 +43,13 @@ AlwaysShowDirOnReadyPage=yes
 ; Request extra space for precompiling libraries
 ExtraDiskSpaceRequired=25000000
 OutputDir=dist
-OutputBaseFilename={#InstallerPrefix}-{#AppVer}-{#Arch}
+OutputBaseFilename={#InstallerPrefix}-{#AppVer}
 Compression=lzma2/ultra
 SolidCompression=yes
 
 LicenseFile=license-for-win-installer.txt
 WizardImageFile=screenshot_with_logo_semidark.bmp
-WizardSmallImageFile=small_logo.bmp
+WizardSmallImageFile=small_logo.bmp 
 ChangesAssociations=yes
 
 ; Signing
@@ -69,10 +63,9 @@ ChangesAssociations=yes
 ; http://www.jrsoftware.org/ishelp/index.php?topic=setup_signtool
 ;
 ; signtool prefix to be configured in Tools => Configure sign tools:
-; "C:\Program Files (x86)\Windows Kits\10\App Certification Kit\signtool.exe" sign /n "Open Source Developer Aivar Annamaa" $p
-; "C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\x86\signtool.exe" sign /n "Open Source Developer Aivar Annamaa" $p
+; "C:\Program Files (x86)\Windows Kits\10\App Certification Kit\signtool.exe" sign /f CERT.p12 /p PASSWORD $p
 ; NB! Don't forget the trailing $p
-SignTool=signtool /tr http://time.certum.pl /td sha256 /fd sha256 /d $qInstaller for Thonny {#AppVer}$q /du $qhttps://thonny.org$q $f
+SignTool=signtool /tr http://timestamp.digicert.com /td sha256 /fd sha256 /d $qInstaller for Thonny {#AppVer}$q /du $qhttps://thonny.org$q $f
 
 
 [Languages]
@@ -113,13 +106,8 @@ Root: HKA; Subkey: "Software\Classes\Applications\thonny.exe";                  
 Root: HKA; Subkey: "Software\Classes\Applications\thonny.exe";                       ValueType: string; ValueName: "AppUserModelID";   ValueData: "{#AppUserModelID}";  Flags: uninsdeletekey
 Root: HKA; Subkey: "Software\Classes\Applications\thonny.exe\SupportedTypes";        ValueType: string; ValueName: ".py";              ValueData: "";        Flags: uninsdeletekey
 Root: HKA; Subkey: "Software\Classes\Applications\thonny.exe\SupportedTypes";        ValueType: string; ValueName: ".pyw";             ValueData: "";        Flags: uninsdeletekey
-Root: HKA; Subkey: "Software\Classes\Applications\thonny.exe\SupportedTypes";        ValueType: string; ValueName: ".pyde";             ValueData: "";        Flags: uninsdeletekey
 Root: HKA; Subkey: "Software\Classes\Applications\thonny.exe\shell\open\command";    ValueType: string; ValueName: "";                 ValueData: """{app}\thonny.exe"" ""%1"""; Flags: uninsdeletekey
 Root: HKA; Subkey: "Software\Classes\Applications\thonny.exe\shell\Edit with Thonny\command";   ValueType: string; ValueName: "";      ValueData: """{app}\thonny.exe"" ""%1"""; Flags: uninsdeletekey
-
-; Explicit marker for the modern 64-bit install mode.
-Root: HKA; Subkey: "Software\Thonny"; ValueType: string; ValueName: "InstallMode"; ValueData: "64-bit"; Flags: uninsdeletevalue
-Root: HKA; Subkey: "Software\Thonny"; ValueType: string; ValueName: "InstallArchitecture"; ValueData: "{#Arch}"; Flags: uninsdeletevalue
 
 ; Add link to Thonny under existing Python.File ProgID
 Root: HKA; Subkey: "Software\Classes\Python.File\shell\Edit with Thonny"; ValueType: none; Flags: uninsdeletekey
@@ -135,11 +123,10 @@ Root: HKA; Subkey: "Software\Classes\{#ThonnyPyProgID}"; ValueType: string; Valu
 
 Root: HKA; Subkey: "Software\Classes\{#ThonnyPyProgID}\shell\open\command";     ValueType: string; ValueName: ""; ValueData: """{app}\thonny.exe"" ""%1""";  Flags: uninsdeletekey
 
-; Relate this ProgID with *.pyde, *.py and *.pyw extensions
+; Relate this ProgID with *.py and *.pyw extensions
 ; https://docs.microsoft.com/en-us/windows/desktop/shell/how-to-include-an-application-on-the-open-with-dialog-box
 Root: HKA; Subkey: "Software\Classes\.py\OpenWithProgIds";  ValueType: string; ValueName: "{#ThonnyPyProgID}";   Flags: uninsdeletevalue
 Root: HKA; Subkey: "Software\Classes\.pyw\OpenWithProgIds"; ValueType: string; ValueName: "{#ThonnyPyProgID}";   Flags: uninsdeletevalue
-Root: HKA; Subkey: "Software\Classes\.pyde\OpenWithProgIds"; ValueType: string; ValueName: "{#ThonnyPyProgID}";   Flags: uninsdeletevalue
 
 ; Add "Python file" to Explorer's "New" context menu (don't remove on uninstallation)
 Root: HKA; Subkey: "Software\Classes\.py\ShellNew";  ValueType: string; ValueData: "Python.File";  
@@ -159,11 +146,6 @@ FinishedHeadingLabel=Great success!
 
 
 [Code]
-
-
-const
-  ModernInstallKey = 'Software\Thonny';
-  ModernInstallModeValue = '64-bit';
 
 var
   QuoteLabel: TLabel;
@@ -300,7 +282,8 @@ begin
       if Upgraded then
         WizardForm.FinishedLabel.Caption := 'Thonny is now upgraded.'
       else
-        WizardForm.FinishedLabel.Caption := 'Thonny is now installed.';
+        WizardForm.FinishedLabel.Caption := 'Thonny is now installed.'
+      end;
       WizardForm.FinishedLabel.Caption := WizardForm.FinishedLabel.Caption 
         + ' Run it via shortcut or right-click a *.py file and select "Edit with Thonny".';
 
@@ -322,34 +305,4 @@ begin
       
       QuoteLabel.Top := WizardForm.FinishedPage.Height - QuoteLabel.Height - ScaleY(20);
     end;
-end;
-
-function Modern64BitInstallMarkerExists(RootKey: Integer): Boolean;
-var
-  InstallMode: String;
-begin
-  Result := False;
-  if RegQueryStringValue(RootKey, ModernInstallKey, 'InstallMode', InstallMode) then
-    Result := CompareText(InstallMode, ModernInstallModeValue) = 0;
-end;
-
-function InitializeSetup(): Boolean;
-var
-  Msg: String;
-begin
-  Result := True;
-
-  if (InstalledForAllUsers() or InstalledForThisUser()) 
-    and not (Modern64BitInstallMarkerExists(HKEY_CURRENT_USER) or Modern64BitInstallMarkerExists(HKEY_LOCAL_MACHINE)) then
-  begin
-      Msg := 'A previous Thonny installation created by an older installer was found.';
-
-    Msg := Msg + #13#10#13#10 +
-      'If you continue, Thonny may be installed twice.' + #13#10 +
-      'It is recommended to uninstall the old version first.' + #13#10#13#10 +
-      'Do you want to continue anyway?';
-
-    if MsgBox(Msg, mbConfirmation, MB_YESNO) <> IDYES then
-      Result := False;
-  end; 
-end;
+end.

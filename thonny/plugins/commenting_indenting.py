@@ -27,9 +27,7 @@ def _selection_is_line_commented(text):
     sel_range = _get_focused_code_range(text)
 
     for lineno in range(sel_range.lineno, sel_range.end_lineno + 1):
-        _line = text.get("{}.0".format(lineno), "{}.end".format(lineno))
-        _line_indent = len(_line) - len(_line.lstrip())
-        line = text.get("{}.{}".format(lineno, _line_indent), "{}.end".format(lineno))
+        line = text.get(str(lineno) + ".0", str(lineno) + ".end")
         if not line.startswith(BLOCK_COMMENT_PREFIX):
             return False
 
@@ -55,9 +53,7 @@ def _comment_selection(text):
     sel_range = _get_focused_code_range(text)
 
     for lineno in range(sel_range.lineno, sel_range.end_lineno + 1):
-        line = text.get("{}.0".format(lineno), "{}.end".format(lineno))
-        line_indent = len(line) - len(line.lstrip())
-        text.insert("{}.{}".format(lineno, line_indent), BLOCK_COMMENT_PREFIX)
+        text.insert(str(lineno) + ".0", BLOCK_COMMENT_PREFIX)
 
     if sel_range.end_lineno > sel_range.lineno:
         _select_lines(text, sel_range.lineno, sel_range.end_lineno)
@@ -69,16 +65,9 @@ def _uncomment_selection(text):
     sel_range = _get_focused_code_range(text)
 
     for lineno in range(sel_range.lineno, sel_range.end_lineno + 1):
-        _line = text.get("{}.0".format(lineno), "{}.end".format(lineno))
-        _line_indent = len(_line) - len(_line.lstrip())
-
-        line = text.get("{}.{}".format(lineno, _line_indent), "{}.end".format(lineno))
-
+        line = text.get(str(lineno) + ".0", str(lineno) + ".end")
         if line.startswith(BLOCK_COMMENT_PREFIX):
-            text.delete(
-                "{}.{}".format(lineno, _line_indent),
-                "{}.{}".format(lineno, _line_indent + len(BLOCK_COMMENT_PREFIX)),
-            )
+            text.delete(str(lineno) + ".0", str(lineno) + "." + str(len(BLOCK_COMMENT_PREFIX)))
 
 
 def _get_focused_code_range(text):
@@ -130,12 +119,6 @@ def _cmd_dedent_selection():
 def _cmd_replace_tabs():
     text = _get_focused_writable_text()
     if text is not None:
-        indent_width = getattr(
-            text, "indent_width", get_workbench().get_option("edit.indent_width")
-        )
-        if indent_width == 0:
-            indent_width = 4
-        indent = indent_width * " "
         orig_lines = text.get("1.0", "end").splitlines(keepends=True)
         new_lines = []
         for line in orig_lines:
@@ -145,7 +128,7 @@ def _cmd_replace_tabs():
                     leading_tab_count += 1
                 else:
                     break
-            new_lines.append(leading_tab_count * indent + line[leading_tab_count:])
+            new_lines.append(leading_tab_count * "    " + line[leading_tab_count:])
 
         text.delete("1.0", "end")
 

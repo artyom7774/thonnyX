@@ -1,7 +1,6 @@
 import os.path
 import sys
 from logging import getLogger
-from textwrap import dedent
 from typing import List, Optional
 
 # make sure thonny folder is in sys.path (relevant in dev)
@@ -50,6 +49,15 @@ _AUTO_RELOAD_PHRASES = [
 
 
 class CircuitPythonBackend(BareMetalMicroPythonBackend):
+    def _clear_repl(self):
+        """
+        CP runs code.py after soft-reboot even in raw repl.
+        At the same time, it re-initializes VM and hardware just by switching
+        between raw and friendly REPL (tested in CP 6.3 and 7.1)
+        """
+        logger.info("Creating fresh REPL for CP")
+        self._ensure_normal_mode()
+        self._ensure_raw_mode()
 
     def _transform_output(self, data, stream_name):
         # Any keypress wouldn't work in Thonny's shell
@@ -57,6 +65,19 @@ class CircuitPythonBackend(BareMetalMicroPythonBackend):
             data = data.replace(phrase + "\r\n", "").replace(phrase + "\n", "")
 
         return data
+
+    def _output_warrants_interrupt(self, data):
+        data = data.strip()
+        for phrase in _ENTER_REPL_PHRASES:
+            if data.endswith(phrase.encode("utf-8")):
+                return True
+
+        return False
+
+    def _get_sys_path_for_analysis(self) -> Optional[List[str]]:
+        return [
+            os.path.join(os.path.dirname(__file__), "api_stubs"),
+        ]
 
 
 if __name__ == "__main__":

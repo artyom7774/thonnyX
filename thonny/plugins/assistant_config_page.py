@@ -1,48 +1,65 @@
-from typing import List, Optional
+from tkinter import ttk
 
-from thonny import get_workbench
-from thonny.config_ui import (
-    ConfigurationPage,
-    add_label_and_box_for_list_of_strings,
-    add_option_checkbox,
-    add_vertical_separator,
-)
+from thonny import get_workbench, ui_utils
+from thonny.config_ui import ConfigurationPage
 from thonny.languages import tr
-from thonny.ui_utils import get_last_grid_row
+from thonny.tktextext import TextFrame
+from thonny.ui_utils import scrollbar_style
 
 
 class AssistantConfigPage(ConfigurationPage):
     def __init__(self, master):
         super().__init__(master)
 
-        add_option_checkbox(
-            self,
+        self.add_checkbox(
             "assistance.open_assistant_on_errors",
             tr("Open Assistant automatically when program crashes with an exception"),
+            row=2,
+            columnspan=2,
         )
 
-        add_option_checkbox(
-            self,
+        self.add_checkbox(
             "assistance.open_assistant_on_warnings",
             tr("Open Assistant automatically when it has warnings for your code"),
+            row=3,
+            columnspan=2,
         )
 
         if get_workbench().get_option("assistance.use_pylint", "missing") != "missing":
-            add_option_checkbox(self, "assistance.use_pylint", tr("Perform selected Pylint checks"))
+            self.add_checkbox(
+                "assistance.use_pylint", tr("Perform selected Pylint checks"), row=4, columnspan=2
+            )
 
         if get_workbench().get_option("assistance.use_mypy", "missing") != "missing":
-            add_option_checkbox(self, "assistance.use_mypy", tr("Perform MyPy checks"))
+            self.add_checkbox("assistance.use_mypy", tr("Perform MyPy checks"), row=5, columnspan=2)
 
-        add_vertical_separator(self)
-        self.disabled_checks_box = add_label_and_box_for_list_of_strings(
+        disabled_checks_label = ttk.Label(self, text=tr("Disabled checks (one id per line)"))
+        disabled_checks_label.grid(row=8, sticky="nw", pady=(10, 0), columnspan=2)
+
+        self.disabled_checks_box = TextFrame(
             self,
-            tr("Disabled checks (one id per line)"),
-            get_workbench().get_option("assistance.disabled_checks"),
+            vertical_scrollbar_style=scrollbar_style("Vertical"),
+            horizontal_scrollbar_style=scrollbar_style("Horizontal"),
+            horizontal_scrollbar_class=ui_utils.AutoScrollbar,
+            wrap="word",
+            font="TkDefaultFont",
+            # cursor="arrow",
+            padx=5,
+            pady=5,
+            height=4,
+            width=30,
+            borderwidth=1,
+            relief="groove",
         )
-        self.columnconfigure(1, weight=1)
-        self.rowconfigure(get_last_grid_row(self), weight=1)
+        self.disabled_checks_box.grid(row=9, sticky="nsew", pady=(0, 10), columnspan=2)
+        self.disabled_checks_box.text.insert(
+            "1.0", "\n".join(get_workbench().get_option("assistance.disabled_checks"))
+        )
 
-    def apply(self, changed_options: List[str]) -> bool:
+        self.columnconfigure(1, weight=1)
+        self.rowconfigure(9, weight=1)
+
+    def apply(self):
         disabled_checks_str = (
             self.disabled_checks_box.text.get("1.0", "end")
             .replace("\r", "")
@@ -51,8 +68,6 @@ class AssistantConfigPage(ConfigurationPage):
             .strip()
         )
         get_workbench().set_option("assistance.disabled_checks", disabled_checks_str.splitlines())
-
-        return True
 
 
 def load_plugin():

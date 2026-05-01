@@ -30,7 +30,7 @@ It's a really nice language for teaching programming. It also has some nice tech
 Libraries, resources and tools
 ------------------------------
 * asttokens (https://github.com/gristlabs/asttokens) provides source locations to AST nodes.
-* basedpyright (https://docs.basedpyright.com/latest/) is used for code completion, go to definition, diagnostics etc.
+* jedi (http://jedi.readthedocs.io) is used for code completion, go to definition, etc.
 * pylint (https://www.pylint.org/) is used as one of the engines behind warnings presented by the Assistant.
 * mypy (http://mypy-lang.org/) is used, just like pylint, as a warning engine in the Assistant.
 * pyserial (https://github.com/pyserial/pyserial) is used for communicating with MicroPython devices.
@@ -47,7 +47,6 @@ Libraries, resources and tools
 Source contributors, sponsors, advisors, translators and frequent bug-reporters
 -------------------------------------------------------------------------------
 * adzierzanowski
-* @AgrimGupta04
 * Aivar Annamaa
 * Albin
 * Alar Leemet
@@ -63,51 +62,36 @@ Source contributors, sponsors, advisors, translators and frequent bug-reporters
 * Andy Piper
 * Ankith
 * Antonio Carlos
-* @aquazod
 * atesin
-* athompson673
 * Augene J. Pak
 * Austin Bart
 * Avag. sayan
 * badukaire
-* BBTF GmbH (bbtf.de)
-* @bletvaska
-* @bmcage
 * Bui Huy Quang
 * borpol
 * CADTEC GmbH (cadtec.ch)
-* @cclauss
 * cefn
 * Celso Isayah Dias
 * Chad Purdy
-* @chechigp
-* @ChrisMayfield
 * codemee
 * Collision Detection
 * cspaier
 * cubimon
 * Curtis Wang
-* David Ostler
-* @devk-op
 * Dominic Twyman
 * Dominik George
 * Donald Butt
-* Dorothee Hornung
-* @dsb3
 * Duncan Ogilvie (@mrexodia)
 * Eliot Blennerhassett
 * Emanuel Angelo
-* @evan-william
 * Fabianus.c
 * Farshid Meidani
 * Filip Schouwenaars
 * Fizban
-* Físicamaldonado
 * Florentina (@emryswaves)
 * freddii
 * fstengel
 * Gabriel Slørdahl
-* @Gadgetoid
 * Gagan Saksena
 * Georges Khaznadar
 * Helmut Ascheid
@@ -123,7 +107,6 @@ Source contributors, sponsors, advisors, translators and frequent bug-reporters
 * jharris1993
 * Juan Falgueras
 * Juhan Oskar Hennoste (@FeldrinH)
-* Jon Peterson
 * Jonathan Campbell
 * Jordan Williams
 * jose1711
@@ -131,12 +114,8 @@ Source contributors, sponsors, advisors, translators and frequent bug-reporters
 * Karolina Surma (@befeleme)
 * Kaspar Papli
 * Kauri Raba
-* @kemelzaidan
-* @konflic
 * kr-g
 * Laszlo Kocsis
-* Louis Lenchant
-* Luis Miguel
 * Lrasinen
 * M Burak Kalkan
 * Marcelo de Gomensoro Malheiros
@@ -144,65 +123,44 @@ Source contributors, sponsors, advisors, translators and frequent bug-reporters
 * Marie Roald
 * Marko Ristin
 * Martin Rommel
-* @matejmatuska
 * Matt Iversen
-* Michel Coutu
 * Miro Hrončok
-* @mrexodia
 * NathanBnm
 * Nicolas Despres
-* @omani
-* Paul Egbert
 * Pavel Minaev
 * Peter Marshall
 * Peter Mawhorter (@solsword)
 * Petr. moses
 * Phil Duby
 * phr0gger
-* @plexus
 * Pop Vasile Alexandru
-* @Pran-jal25
-* @r0zh
 * Radim
-* Ralf Michael Metzing
-* @rauferd
-* @razzius
 * Rene Lehtma
-* Richard Kanehl
-* Rosen Mitrev
 * Rune Langøy
-* Russell Taber
 * Saishen, Inc.
 * Sam Warmuth
 * Sami Almuhammady
-* @sampotaas-hub
-* S Jonkers
 * sailslack
 * Scott Blackledge
-* @scottfp
 * segalion
 * Simon Gijsen
 * Simon Long
 * sourceperl
 * speedy-10
 * Stefan Rothe
-* Stephen Gallo
 * Stewart Russell (@scruss)
 * Suk-Hyung Hwang
 * Sven Duzont
 * Syed Nasim
-* @t2solve
 * Taavi Ilp
 * tabreturn
 * TANAKA Masayuki
 * Thomas Helmuth
-* @tinyboxvk
 * TooLazy0x00
 * Toomas Mölder
 * Tristan Bunn
 * Tusamten
 * Vytenis (svajoklis-1)
-* @WhitespaceQ
 * Xin Rong
 * YEON
 * 丁向阳 (Ding-XiangYang)

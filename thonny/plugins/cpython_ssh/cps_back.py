@@ -36,11 +36,11 @@ logger = getLogger("thonny.plugins.cpython_ssh.cps_back")
 
 
 class SshCPythonBackend(BaseBackend, SshMixin):
-    def __init__(self, host, port, user, interpreter, cwd, main_backend_options: Dict[str, Any]):
+    def __init__(self, host, user, interpreter, cwd, main_backend_options: Dict[str, Any]):
         logger.info("Starting mediator for %s @ %s", user, host)
         self._main_backend_options = main_backend_options
         password = sys.stdin.readline().strip("\r\n")
-        SshMixin.__init__(self, host, port, user, password, interpreter, cwd)
+        SshMixin.__init__(self, host, user, password, interpreter, cwd)
         self._upload_main_backend()
         self._proc = self._start_main_backend()
         self._main_backend_is_fresh = True
@@ -183,6 +183,7 @@ class SshCPythonBackend(BaseBackend, SshMixin):
 
         import thonny.ast_utils
         import thonny.backend
+        import thonny.jedi_utils
         import thonny.plugins.cpython_backend.cp_back
 
         # Don't want to import cp_back_launcher and cp_tracers
@@ -192,8 +193,8 @@ class SshCPythonBackend(BaseBackend, SshMixin):
             thonny.__file__,
             thonny.common.__file__,
             thonny.ast_utils.__file__,
+            thonny.jedi_utils.__file__,
             thonny.backend.__file__,
-            thonny.backend.__file__.replace("backend.py", "VERSION"),
             thonny.plugins.cpython_backend.__file__,
             thonny.plugins.cpython_backend.cp_back.__file__,
             thonny.plugins.cpython_backend.cp_back.__file__.replace("cp_back.py", "cp_launcher.py"),
@@ -207,7 +208,6 @@ class SshCPythonBackend(BaseBackend, SshMixin):
 
 if __name__ == "__main__":
     thonny.configure_backend_logging()
-    print(PROCESS_ACK)
     args = ast.literal_eval(sys.argv[1])
     backend = SshCPythonBackend(**args)
     backend.mainloop()
