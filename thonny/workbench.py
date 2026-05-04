@@ -379,6 +379,10 @@ class Workbench(tk.Tk):
             {}
         )  # type: Dict[Tuple[str, str], MenuItem] # key is pair (menu_name, command_label)
 
+        # TODO ge
+
+        import json
+
         # create standard menus in correct order
         self.get_menu("file", tr("File"))
         self.get_menu("edit", tr("Edit"))
@@ -389,6 +393,57 @@ class Workbench(tk.Tk):
         self.get_menu("turtle", "Черепашка")
         self.get_menu("robot", "Робот")
         self.get_menu("help", tr("Help"))
+
+        help = self.get_menu("help")
+
+        help.add_command(label="Обновить задачи", command=lambda: openUpdateMenu())
+
+        def openUpdateMenu():
+            import requests
+            import logging
+            import zipfile
+            import shutil
+
+            # url = "https://github.com/Nrdnan/thonnyX-data/blob/main/tasks.zip"
+            url = "https://raw.githubusercontent.com/Nrdnan/thonnyX-data/main/tasks.zip"
+            out = "tasks.zip"
+
+            try:
+                headers = {'Accept-Encoding': 'identity'}
+
+                with requests.get(url, stream=True, headers=headers) as r:
+                    r.raise_for_status()
+
+                    content_type = r.headers.get('content-type', '')
+
+                    if 'text/html' in content_type and 'blob' not in url:
+                        logging.error(f"Сервер вернул HTML-страницу, а не файл. Возможно, URL неверен.")
+
+                    with open(out, "wb") as file:
+                        for chunk in r.iter_content(chunk_size=8192):
+                            if chunk:
+                                file.write(chunk)
+
+            except Exception as e:
+                logging.error(traceback.format_exc())
+
+                return
+
+            shutil.rmtree("tasks")
+
+            with zipfile.ZipFile("tasks.zip", 'r') as zip_ref:
+                zip_ref.extractall(".")
+
+            os.remove("tasks.zip")
+
+            self._init_menu()
+
+        try:
+            with open("tasks/config.json", "r", encoding="utf-8") as file:
+                config = json.load(file)
+
+        except:
+            return
 
         # TODO ROBOT
 
@@ -443,7 +498,9 @@ class Workbench(tk.Tk):
 
                 allPyroboTasksElements[name] = var
 
-                menu.add_checkbutton(label=f"{name}", variable=var, command=lambda n = name: setCurrentPyrobo(n))
+                real = f"tasks/pyrob/{type}/{path}"
+
+                menu.add_checkbutton(label=f"{name}" if real not in config else config[real], variable=var, command=lambda n = name: setCurrentPyrobo(n))
 
         # TODO TURTLE
 
@@ -454,8 +511,8 @@ class Workbench(tk.Tk):
         turtle.add_checkbutton(label="Включить", variable=var, command=lambda v=var: setTurtleUsing(v))
         turtle.add_separator()
 
-        turtle.add_cascade(label="Информация", menu=menu)
-        turtle.add_separator()
+        # turtle.add_cascade(label="Информация", menu=menu)
+        # turtle.add_separator()
 
         allTurtleTasksElements = {}
 
@@ -603,6 +660,7 @@ class Workbench(tk.Tk):
             for key, value in allSpeedElements.items():
                 if value.get():
                     variables.variables.SPEED_CAPACITY = int(key)
+
 
     def _load_plugins(self) -> None:
         # built-in plugins
@@ -2484,8 +2542,15 @@ class Workbench(tk.Tk):
             data = menu.entryconfigure(i)
             if "label" in data:
                 # it's a command, not separator
-                sibling_label = menu.entrycget(i, "label")
-                sibling_group = self._menu_item_specs[(menu_name, sibling_label)].group
+
+                # TODO ge
+
+                try:
+                    sibling_label = menu.entrycget(i, "label")
+                    sibling_group = self._menu_item_specs[(menu_name, sibling_label)].group
+
+                except:
+                    continue
 
                 if sibling_group == specs.group:
                     this_group_exists = True

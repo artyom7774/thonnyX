@@ -498,7 +498,7 @@ class Runner:
             flag = True
 
             output = f"print('''Условие: {TASK.INFORMATION}''')\n"
-            compare = " "
+            compare = " // "
 
             if variables.variables.TASK not in variables.variables.RUN_INFORMATION["tasks"]:
                 variables.variables.RUN_INFORMATION["tasks"][variables.variables.TASK] = 0

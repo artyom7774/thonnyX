@@ -6,7 +6,7 @@ import socket
 import time
 
 TITLE = "Thonny X"
-VERSION = "1.0.0"
+VERSION = "1.1.0"
 
 
 class variables:
@@ -59,8 +59,6 @@ run({variables.SPEED_CAPACITY})
 """
 
 generateTurtleCode = lambda task, code, start: f"""
-from PIL import ImageGrab
-
 from turtle import *
 import tkinter as tk
 
