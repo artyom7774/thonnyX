@@ -35,5 +35,5 @@ exe = EXE(
     target_arch=None,
     codesign_identity=None,
     entitlements_file=None,
-    icon=['E:\\divelop\\thonny-4.1.7\\thonny.ico'],
+    icon=['E:\\divelop\\thonnyX\\thonny.ico'],
 )
