@@ -6,7 +6,7 @@ import socket
 import time
 
 TITLE = "Thonny X"
-VERSION = "1.1.3"
+VERSION = "1.1.4"
 
 
 class variables:
@@ -19,7 +19,7 @@ class variables:
     TASKS_MODE = False
 
     TURTLE_MENU_INFORMATION_LINK = None
-    ROBOT_MENU_INFORMATION_LINK = None
+    ROROBO_MENU_INFORMATION_LINK = None
     TASKS_MENU_INFORMATION_LINK = None
 
     RUN_INFORMATION = {
@@ -147,10 +147,10 @@ def work():
             import tkinter
 
             if variables.PYROBO_MODE:
-                variables.ROBOT_MENU_INFORMATION_LINK.delete(0, tkinter.END)
+                variables.ROROBO_MENU_INFORMATION_LINK.delete(0, tkinter.END)
 
             for name, complete in variables.RUN_INFORMATION["pyrob"].items():
-                variables.ROBOT_MENU_INFORMATION_LINK.add_command(label=f"{name}: {('-', '+')[complete]}")
+                variables.ROROBO_MENU_INFORMATION_LINK.add_command(label=f"{name}: {('-', '+')[complete]}")
 
         except Exception as e:
             print(traceback.format_exc())

@@ -456,7 +456,7 @@ class Workbench(tk.Tk):
         robot.add_checkbutton(label="Включить", variable=var, command=lambda v = var: setRobotUsing(v))
         robot.add_separator()
 
-        variables.variables.ROBOT_MENU_INFORMATION_LINK = menu = tk.Menu(tearoff=0)
+        variables.variables.ROROBO_MENU_INFORMATION_LINK = menu = tk.Menu(tearoff=0)
         robot.add_cascade(label="Информация", menu=menu)
 
         menu = tk.Menu(tearoff=0)
