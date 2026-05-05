@@ -6,7 +6,7 @@ import socket
 import time
 
 TITLE = "Thonny X"
-VERSION = "1.1.4"
+VERSION = "1.1.5"
 
 
 class variables:
