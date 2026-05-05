@@ -1,16 +1,88 @@
 
-from pyrob import *
+from turtle import *
+import tkinter as tk
 
-import traceback
+COLOR1 = "#EFEFEF"  # dark
+COLOR2 = "#F3F3F3"  # light
 
-@task
-def c7upr_upr_12_1():
-	try:
-		pass
-		dn(2)
-		rt(4)
-		up(2)
-	except Exception as e:
-		traceback.print_exc()
 
-run(1)
+def create_template():
+    setup(660, 660)
+    
+    root = getscreen()._root
+    root.resizable(False, False)
+    root.attributes("-topmost", True)
+    
+    canvas = getcanvas()
+    
+    cell_size = 25
+    half_width = 325
+    half_height = 325
+
+    for x in range(-half_width, half_width + 1, cell_size):
+        canvas.create_line(x, -half_height, x, half_height, fill=COLOR2, width=1, tags="grid", capstyle=tk.BUTT, smooth=False)
+
+    for y in range(-half_height, half_height + 1, cell_size):
+        canvas.create_line(-half_width, y, half_width, y, fill=COLOR2, width=1, tags="grid", capstyle=tk.BUTT, smooth=False)
+
+    canvas.create_line(-half_width, 0, half_width, 0, fill=COLOR1, width=2, tags="axes", capstyle=tk.BUTT, smooth=False)
+    canvas.create_line(0, -half_height, 0, half_height, fill=COLOR1, width=2, tags="axes", capstyle=tk.BUTT, smooth=False)
+
+    mark_size = 6
+
+    for x in range(-half_width, half_width + 1, cell_size):
+        if x != 0:
+            canvas.create_line(x, -mark_size//2, x, mark_size//2, fill=COLOR1, width=1, tags="marks", capstyle=tk.BUTT, smooth=False)
+
+    for y in range(-half_height, half_height + 1, cell_size):
+        if y != 0:
+            canvas.create_line(-mark_size//2, y, mark_size//2, y, fill=COLOR1, width=1, tags="marks", capstyle=tk.BUTT, smooth=False)
+        
+    update()
+        
+    return canvas
+
+
+canvas = create_template()
+
+from tasks.turtle import color as create
+
+import typing
+
+if typing.TYPE_CHECKING:
+    from turtle import *
+
+tracer(0)
+
+colormode(255)
+color(*create((0, 0, 0)))
+
+forward(100)
+left(150)
+forward(60)
+left(60)
+forward(60)
+
+penup()
+goto(0, 0)
+right(210)
+color(0, 0, 0)
+pendown()
+
+tracer(1)
+
+
+pencolor((0, 0, 0))
+
+pensize(1)
+
+# tracer(0)
+speed(11)
+
+for i in range(10000, 100000):
+    fd(i // 10000)
+    rt(i ** 2 // 10000)
+    
+    
+done()
+

@@ -107,6 +107,8 @@ canvas = create_template()
 
 {start}
 
+pencolor((0, 0, 0))
+
 {code}
     
 done()
