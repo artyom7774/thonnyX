@@ -109,6 +109,8 @@ def task(*args, **kwargs):
             thr.daemon = True
             thr.start()
 
+            thr.join()
+
             return passed
 
         tasks_to_run.append(wrapper)
