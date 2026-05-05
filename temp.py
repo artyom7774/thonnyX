@@ -76,10 +76,10 @@ pencolor((0, 0, 0))
 
 pensize(1)
 
-# tracer(0)
+tracer(0)
 speed(11)
 
-for i in range(10000, 100000):
+for i in range(100000):
     fd(i // 10000)
     rt(i ** 2 // 10000)
     
