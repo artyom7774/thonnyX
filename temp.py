@@ -4,10 +4,18 @@ from pyrob import *
 import traceback
 
 @task
-def ctask_task_8_30():
+def c7upr_upr_14_1_b():
 	try:
 		pass
-		rt(10)
+		rt()
+		
+		while wdn():
+		    fill()
+		    rt()
+		    
+		while not wlt():
+		    lt()
+		
 	except Exception as e:
 		traceback.print_exc()
 
