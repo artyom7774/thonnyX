@@ -1,5 +1,6 @@
 """
-pyinstaller -F -w --icon="E:\divelop\thonnyX\thonny.ico" Thonny.py
+pyinstaller -F -w --icon="thonny.ico" Thonny.py
+.venv/Scripts/pyinstaller.exe -F -w  --icon="thonny.ico" --hidden-import=requests Thonny.py
 
 """
 
