@@ -436,7 +436,12 @@ class Workbench(tk.Tk):
 
             os.remove("tasks.zip")
 
-            self._init_menu()
+            self.init_menu_task()
+
+        self.init_menu_task()
+
+    def init_menu_task(self):
+        import json
 
         try:
             with open("tasks/config.json", "r", encoding="utf-8") as file:
@@ -450,6 +455,7 @@ class Workbench(tk.Tk):
         import variables
 
         robot = self.get_menu("robot")
+        robot.delete(0, "end")
 
         pyroboModeVar = var = tk.BooleanVar()
 
@@ -505,6 +511,7 @@ class Workbench(tk.Tk):
         # TODO TURTLE
 
         turtle = self.get_menu("turtle")
+        turtle.delete(0, "end")
 
         turtleModeVar = var = tk.BooleanVar()
 
@@ -543,6 +550,7 @@ class Workbench(tk.Tk):
         # TODO TASKS
 
         tasks = self.get_menu("tasks")
+        tasks.delete(0, "end")
 
         tasksModeVar = var = tk.BooleanVar()
 

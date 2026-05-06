@@ -1,22 +1,7 @@
-
-from pyrob import *
-
-import traceback
-
-@task
-def c7upr_upr_14_1_b():
-	try:
-		pass
-		rt()
-		
-		while wdn():
-		    fill()
-		    rt()
-		    
-		while not wlt():
-		    lt()
-		
-	except Exception as e:
-		traceback.print_exc()
-
-run(1)
+print('''Условие: 
+   Площадь участка измеряется в арах. Выразите эту площадь
+   в квадратных километрах (найдите их полное количество).
+(Упр 3.4 страница 140)
+''')
+print('- | Данные: "1 // 3", Ответ: "", Правильный ответ: "0"')
+print('Тесты не пройдены.')
