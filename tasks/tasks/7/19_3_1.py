@@ -7,11 +7,11 @@ class Task:
 
     @staticmethod
     def ctest():
-        return ["1\n3", "4\n2", "3\n7"]
+        return ["19", "41", "33"]
 
     @staticmethod
     def rtest():
-        return [f"{random.randint(1, 20)}\n{random.randint(1, 20)}" for _ in range(Task.RTEST)]
+        return [f"{random.randint(10, 99)}" for _ in range(Task.RTEST)]
 
 
 Task.INFORMATION = """
