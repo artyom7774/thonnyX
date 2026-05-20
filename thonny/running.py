@@ -446,7 +446,10 @@ class Runner:
 
                 return
 
-            code = variables.generatePyrobCode(variables.variables.PYROBO_TASK, variables.variables.CONTENT_TEXT)
+            code = variables.generatePyrobCode(variables.variables.PYROBO_TASK, f"exec(open('code.py', 'r', encoding='utf-8').read())")
+
+            with open("code.py", "w", encoding="utf-8") as file:
+                file.write(variables.variables.CONTENT_TEXT)
 
             with open("temp.py", "w", encoding="utf-8") as file:
                 file.write(code)
@@ -456,14 +459,16 @@ class Runner:
             )
 
         elif variables.variables.TURTLE_MODE:
-            if variables.variables.TURTLE_TASK == "":
-                start = ""
+            start = ""
 
-            else:
+            if variables.variables.TURTLE_TASK != "":
                 with open(f"tasks/turtle/{variables.variables.TURTLE_TASK[1:][:variables.variables.TURTLE_TASK.find('_') - 1]}/{variables.variables.TURTLE_TASK[variables.variables.TURTLE_TASK.find('_') + 1:]}.py", "r") as file:
                     start = file.read()
 
-            code = variables.generateTurtleCode(variables.variables.TURTLE_TASK, variables.variables.CONTENT_TEXT, start)
+            code = variables.generateTurtleCode(variables.variables.TURTLE_TASK, f"exec(open('code.py', 'r', encoding='utf-8').read())", start)
+
+            with open("code.py", "w", encoding="utf-8") as file:
+                file.write(variables.variables.CONTENT_TEXT)
 
             with open("temp.py", "w", encoding="utf-8") as file:
                 file.write(code)
@@ -504,7 +509,24 @@ class Runner:
                 variables.variables.RUN_INFORMATION["tasks"][variables.variables.TASK] = 0
 
             for test in TASK.ctest() + TASK.rtest():
-                v1 = str(program(test)).replace("\n", compare)
+                try:
+                    v1 = str(program(test)).replace("\n", compare)
+
+                except BaseException:
+                    code = variables.generateErrorTaskCode(f"exec(open('code.py', 'r', encoding='utf-8').read())", test)
+
+                    with open("code.py", "w", encoding="utf-8") as file:
+                        file.write(variables.variables.CONTENT_TEXT)
+
+                    with open("temp.py", "w", encoding="utf-8") as file:
+                        file.write(code)
+
+                    self.execute_script(
+                        f"{os.getcwd()}/temp.py", self._get_active_arguments(), os.getcwd(), "Run"
+                    )
+
+                    return
+
                 v2 = str(currect(test)).replace("\n", compare)
 
                 visible = test.replace("\n", compare)

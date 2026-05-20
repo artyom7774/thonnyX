@@ -142,10 +142,24 @@ canvas = create_template()
 {start}
 
 pencolor((0, 0, 0))
+pendown()
 
 {code}
-    
+
 done()
+
+"""
+
+generateErrorTaskCode = lambda code, tasks: f"""
+import sys
+
+def input(prompt=""):
+    if prompt:
+        sys.stdout.write(prompt)
+        
+    return tasks.pop(0)
+
+{code}
 
 """
 
