@@ -467,7 +467,7 @@ class Workbench(tk.Tk):
                 dialog.title(f"Доступа новая версия thonnyX {variables.variables.NEW_VERSION}")
                 dialog.resizable(False, False)
 
-                center_window(dialog, 300, 150)
+                center_window(dialog, 400, 200)
 
                 dialog.transient(root)
                 dialog.grab_set()
