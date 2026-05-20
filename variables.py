@@ -153,10 +153,17 @@ done()
 generateErrorTaskCode = lambda code, tasks: f"""
 import sys
 
+tasks = {tasks.split(s1)}
+
 def input(prompt=""):
     if prompt:
         sys.stdout.write(prompt)
+    
+    if not tasks:
+        print("Неверный формат данных")
         
+        exit(0)
+    
     return tasks.pop(0)
 
 {code}
