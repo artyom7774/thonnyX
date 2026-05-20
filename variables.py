@@ -2,15 +2,21 @@
 
 import traceback
 import threading
+import requests
 import socket
+import json
 import time
 
 TITLE = "Thonny X"
-VERSION = "1.1.5"
 
 
 class variables:
+    VERSION_CAN_BE_UPDATED = False
+    VERSION_EXISTS = False
+
     SOCKET_WAS_CREATED = False
+
+    NEW_VERSION = "none"
 
     SPEED_CAPACITY = 1
 
@@ -38,6 +44,34 @@ class variables:
     PYROBO_TASK = ""
     TASK = ""
 
+
+def getStringVersion(version):
+    version = version[1:]
+    return ''.join(version.split("."))
+
+
+with open("version.json", "r", encoding="utf-8") as file:
+    data = json.load(file)
+
+VERSION = data["version"]
+
+url = "https://raw.githubusercontent.com/Nrdnan/thonnyX-data/main/version.json"
+response = requests.get(url)
+
+new = json.loads(response.text) if response.status_code == 200 else None
+
+print(new)
+
+print(time.time(), data["time"], time.time() - data["time"], time.time() - data["time"] > eval(new["update"]))
+
+if new is not None:
+    if getStringVersion(VERSION) < getStringVersion(new["version"]):
+        variables.VERSION_EXISTS = True
+
+        if time.time() - data["time"] > eval(new["update"]):
+            variables.VERSION_CAN_BE_UPDATED = True
+
+variables.NEW_VERSION = new["version"]
 
 s1 = "\n"
 s2 = "\t"

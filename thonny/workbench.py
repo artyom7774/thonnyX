@@ -21,6 +21,7 @@ from typing import Any, Callable, Dict, List, Optional, Sequence, Set, Tuple, Ty
 from warnings import warn
 
 import thonny
+import variables
 from thonny import (
     THONNY_USER_DIR,
     assistance,
@@ -389,7 +390,7 @@ class Workbench(tk.Tk):
         self.get_menu("view", tr("View"))
         self.get_menu("run", tr("Run"))
         self.get_menu("tools", tr("Tools"))
-        self.get_menu("tasks", "Задания")
+        self.get_menu("tasks", "Задачи")
         self.get_menu("turtle", "Черепашка")
         self.get_menu("robot", "Робот")
         self.get_menu("help", tr("Help"))
@@ -397,6 +398,7 @@ class Workbench(tk.Tk):
         help = self.get_menu("help")
 
         help.add_command(label="Обновить задачи", command=lambda: openUpdateMenu())
+        help.add_command(label="Обновить версию", command=lambda: self.show_update_menu(1))
 
         def openUpdateMenu():
             import requests
@@ -439,6 +441,98 @@ class Workbench(tk.Tk):
             self.init_menu_task()
 
         self.init_menu_task()
+
+        self.show_update_menu()
+
+    def show_update_menu(self, confirm: bool = False):
+        # TODO ge
+
+        if (variables.variables.VERSION_EXISTS and confirm) or variables.variables.VERSION_CAN_BE_UPDATED:
+            import tkinter
+            import json
+
+            root = self
+
+            def center_window(window, width, height):
+                screen_width = window.winfo_screenwidth()
+                screen_height = window.winfo_screenheight()
+
+                x = (screen_width - width) // 2
+                y = (screen_height - height) // 2
+
+                window.geometry(f"{width}x{height}+{x}+{y}")
+
+            def show_update_dialog():
+                dialog = tkinter.Toplevel(root)
+                dialog.title(f"Доступа новая версия thonnyX {variables.variables.NEW_VERSION}")
+                dialog.resizable(False, False)
+
+                center_window(dialog, 300, 150)
+
+                dialog.transient(root)
+                dialog.grab_set()
+
+                message = tkinter.Label(
+                    dialog,
+                    text=f"Доступна новая версия thonnyX {variables.variables.NEW_VERSION}\n",
+                    font=("Arial", 10),
+                    justify="center"
+                )
+                message.pack(pady=20, padx=20)
+
+                def download():
+                    import webbrowser
+
+                    with open("version.json", "r", encoding="utf-8") as file:
+                        data = json.load(file)
+
+                    data["update"] = 0
+
+                    with open("version.json", "w", encoding="utf-8") as file:
+                        json.dump(data, file, indent=4)
+
+                    webbrowser.open(f"https://github.com/artyom7774/thonnyX/releases/tag/{variables.variables.NEW_VERSION}")
+
+                    dialog.destroy()
+
+                def postpone():
+                    import time
+
+                    with open("version.json", "r", encoding="utf-8") as file:
+                        data = json.load(file)
+
+                    data["time"] = time.time()
+
+                    with open("version.json", "w", encoding="utf-8") as file:
+                        json.dump(data, file, indent=4)
+
+                    dialog.destroy()
+
+                def cancel():
+                    dialog.destroy()
+
+                btn_frame = tkinter.Frame(dialog)
+                btn_frame.pack(pady=10)
+
+                btn_download = tkinter.Button(btn_frame, text="Скачать", width=10, command=download)
+                btn_download.pack(side="left", padx=5)
+
+                btn_postpone = tkinter.Button(btn_frame, text="Отложить", width=10, command=postpone)
+                btn_postpone.pack(side="left", padx=5)
+
+                btn_cancel = tkinter.Button(btn_frame, text="Отмена", width=10, command=cancel)
+                btn_cancel.pack(side="left", padx=5)
+
+                btn_postpone.focus_set()
+
+            show_update_dialog()
+
+        elif confirm:
+            messagebox.showinfo(
+                "Информация",
+                "Новая версия не найдена.",
+                parent = self
+            )
 
     def init_menu_task(self):
         import json
