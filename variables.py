@@ -102,13 +102,13 @@ COLOR2 = "#F3F3F3"  # light
 
 def create_template():
     setup(660, 660)
-    
+
     root = getscreen()._root
     root.resizable(False, False)
     root.attributes("-topmost", True)
-    
+
     canvas = getcanvas()
-    
+
     cell_size = 25
     half_width = 325
     half_height = 325
@@ -131,9 +131,9 @@ def create_template():
     for y in range(-half_height, half_height + 1, cell_size):
         if y != 0:
             canvas.create_line(-mark_size//2, y, mark_size//2, y, fill=COLOR1, width=1, tags="marks", capstyle=tk.BUTT, smooth=False)
-        
+
     update()
-        
+
     return canvas
 
 
@@ -153,10 +153,17 @@ done()
 generateErrorTaskCode = lambda code, tasks: f"""
 import sys
 
+tasks = {tasks.split(s1)}
+
 def input(prompt=""):
     if prompt:
         sys.stdout.write(prompt)
-        
+
+    if not tasks:
+        print("Неверный формат данных")
+
+        exit(0)
+
     return tasks.pop(0)
 
 {code}

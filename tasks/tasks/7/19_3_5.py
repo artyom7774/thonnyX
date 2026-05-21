@@ -11,7 +11,7 @@ class Task:
 
     @staticmethod
     def rtest():
-        return [f"{random.randint(1, 21000)}}" for _ in range(Task.RTEST)]
+        return [f"{random.randint(1, 21000)}" for _ in range(Task.RTEST)]
 
 
 Task.INFORMATION = """
