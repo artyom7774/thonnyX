@@ -1,3 +1,3 @@
 x = input()
 
-print((x // 10 + x % 10) / 2)
+print(x + 1)
