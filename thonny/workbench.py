@@ -466,7 +466,7 @@ class Workbench(tk.Tk):
 
             def show_update_dialog():
                 dialog = tkinter.Toplevel(root)
-                dialog.title(f"Доступа новая версия thonnyX {variables.variables.NEW_VERSION}")
+                dialog.title(f"Доступна новая версия thonnyX {variables.variables.NEW_VERSION}")
                 dialog.resizable(False, False)
 
                 center_window(dialog, 400, 200)
