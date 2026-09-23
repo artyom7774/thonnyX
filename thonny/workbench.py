@@ -400,6 +400,8 @@ class Workbench(tk.Tk):
         help.add_command(label="Обновить задачи", command=lambda: openUpdateMenu())
         help.add_command(label="Обновить версию", command=lambda: self.show_update_menu(1))
 
+        help.option_clear()
+
         def openUpdateMenu():
             import requests
             import logging
@@ -543,6 +545,8 @@ class Workbench(tk.Tk):
 
         except:
             return
+
+        # TODO ge
 
         # TODO ROBOT
 

@@ -166,20 +166,6 @@ def load_plugin() -> None:
         # webbrowser.open returns bool, but add_command expects None
         webbrowser.open(url)
 
-    get_workbench().add_command(
-        "changelog",
-        "help",
-        tr("Version history"),
-        lambda: open_url("https://github.com/thonny/thonny/blob/master/CHANGELOG.rst"),
-        group=60,
-    )
-    get_workbench().add_command(
-        "issues",
-        "help",
-        tr("Report problems"),
-        lambda: open_url("https://github.com/thonny/thonny/issues"),
-        group=60,
-    )
     get_workbench().add_command("about", "help", tr("About Thonny"), open_about, group=61)
 
     # For Mac
