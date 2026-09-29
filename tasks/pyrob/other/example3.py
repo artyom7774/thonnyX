@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 
-import pyrob.core as rob
+import pyrobv.core as rob
 
 
 class Task:

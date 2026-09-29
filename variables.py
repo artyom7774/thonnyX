@@ -77,7 +77,7 @@ s1 = "\n"
 s2 = "\t"
 
 generatePyrobCode = lambda task, code: f"""
-from pyrob import *
+from pyrobv import *
 
 import traceback
 

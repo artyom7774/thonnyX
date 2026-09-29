@@ -582,7 +582,7 @@ class Workbench(tk.Tk):
 
         types = [path for path in os.listdir("tasks/pyrob/") if os.path.isdir(f"tasks/pyrob/{path}")]
 
-        import pyrob
+        import pyrobv as pyrob
 
         allPyroboTasksElements = {}
 

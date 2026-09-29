@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 
-import pyrob.core as rob
+import pyrobv.core as rob
 from tasks.pyrob import check_filled_cells, find_cells_to_be_filled
 
 class Task:

@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 
-import pyrob.core as rob
-from pyrob.tasks import check_filled_cells
+import pyrobv.core as rob
+from pyrobv.tasks import check_filled_cells
 import random
 
 class Task:
